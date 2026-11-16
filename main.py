@@ -1,35 +1,47 @@
-from logica import creeaza_petrecere, adauga_invitat
+from logica import creeaza_petrecere, adauga_invitat, obtine_petreceri_active
 
-def main():
-    print("=== Organizare Petrecere ===")
-    parola = input("Introdu parola de admin: ")
-    
+def meniu_admin():
+    print("=== Autentificare ===")
+    parola = input("Introdu parola: ")
     if parola != "admin":
         print("Acces respins!")
         return
 
-    print("\n--- Seteaza Detaliile Petrecerii ---")
-    try:
-        nume = input("Nume petrecere: ")
-        data = input("Data si Ora: ")
-        locatie = input("Locatia: ")
-        dress = input("Dress Code: ")
+    while True:
+        print("\n=== MENIU PRINCIPAL ADMIN ===")
+        print("1. Creeaza o petrecere noua")
+        print("2. Vezi petrecerile in desfasurare")
+        print("3. Iesire")
         
-        petrecere = creeaza_petrecere(nume, data, locatie, dress)
-        print(f"\nPetrecerea {petrecere['nume']} a fost creata!")
+        optiune = input("Alege o optiune (1/2/3): ")
         
-        print("\n--- RSVP Invitat ---")
-        nume_invitat = input("Numele tau: ")
-        status = input("Participi? (Da/Nu/Poate): ")
-        meniu = input("Meniu (Normal/Vegetarian/Vegan): ")
-        melodie = input("Melodia preferata: ")
-        
-        adauga_invitat(petrecere, nume_invitat, status, meniu, melodie)
-        print("\nInregistrare completa! Datele actuale sunt:")
-        print(petrecere)
-        
-    except ValueError as eroare:
-        print(f"Eroare: {eroare}")
+        if optiune == "1":
+            print("\n--- Seteaza Detaliile ---")
+            try:
+                nume = input("Nume petrecere: ")
+                data = input("Data si Ora: ")
+                locatie = input("Locatia: ")
+                dress = input("Dress Code: ")
+                
+                petrecere = creeaza_petrecere(nume, data, locatie, dress)
+                print(f"-> Succes! Petrecerea '{petrecere['nume']}' a fost creata.")
+            except ValueError as eroare:
+                print(f"Eroare: {eroare}")
+                
+        elif optiune == "2":
+            print("\n--- Petreceri Active ---")
+            try:
+                petreceri = obtine_petreceri_active()
+                for p in petreceri:
+                    print(f"- {p['nume']} | Locatia: {p['locatia']} | Data: {p['data_ora']}")
+            except ValueError as eroare:
+                print(f"Info: {eroare}")
+                
+        elif optiune == "3":
+            print("Iesire din aplicatie...")
+            break
+        else:
+            print("Optiune invalida! Te rog alege 1, 2 sau 3.")
 
 if __name__ == "__main__":
-    main()
+    meniu_admin()
