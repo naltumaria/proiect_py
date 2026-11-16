@@ -1,0 +1,1 @@
+invitati_petrecere = []
